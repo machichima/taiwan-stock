@@ -9,15 +9,6 @@ import (
 	"time"
 )
 
-// TODO: Move to independent config file
-const allStockUrl string = "https://www.twse.com.tw/exchangeReport/STOCK_DAY_ALL"
-const oneStockDateUrl string = "https://www.twse.com.tw/exchangeReport/STOCK_DAY?date=%s&stockNo=%s"
-
-const retryTimes int = 5 // maximum retry time
-
-const EnsureFetchDays int = 15  // least amount of data required
-const KdDays int = 8
-
 func GetAllStockInfoMonth(month string) ([]StockInfo, error) {
 	stockIdTitles, err := GetAllStockIDTitle()
 	if err != nil {
@@ -75,11 +66,11 @@ func GetAllStockInfoMonth(month string) ([]StockInfo, error) {
 }
 
 func FetchOneStockMonth(stockID string, month string) (StockDataStruct, error) {
-	url := fmt.Sprintf(oneStockDateUrl, month, stockID)
+	url := fmt.Sprintf(Conf.OneStockDateUrl, month, stockID)
 
 	var res *http.Response
 
-	for i := 0; i < retryTimes; i++ {
+	for i := 0; i < Conf.RetryTimes; i++ {
 		var err error
 		res, err = http.Get(url)
 		if err == nil {
@@ -117,9 +108,9 @@ func GetAllStockIDTitle() ([]StockIDTitle, error) {
 
 func fetchAllStockInfo() (StockDataStruct, error) {
 	var res *http.Response
-	for i := 0; i < retryTimes; i++ {
+	for i := 0; i < Conf.RetryTimes; i++ {
 		var err error
-		res, err = http.Get(allStockUrl)
+		res, err = http.Get(Conf.AllStockUrl)
 		if err == nil {
 			break
 		}

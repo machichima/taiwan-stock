@@ -11,8 +11,12 @@ import (
 
 func main() {
 
-	rsvDuration := 9
-	month := 9
+    if err := tools.ReadConfJson("config.json"); err != nil {
+        panic(err)
+    }
+
+    // -1 cause cal rsvduration contains the current date
+    ensureFetchDays := tools.Conf.KdDays + tools.Conf.RsvDuration - 1
 
 	stockInfoList := []tools.StockInfo{}
 
@@ -23,7 +27,7 @@ func main() {
 		if os.IsNotExist(err) {
 
 			// crawl for data
-			stockInfoList, err = tools.GetAllStockInfoMonth(strconv.Itoa(month))
+			stockInfoList, err = tools.GetAllStockInfoMonth(strconv.Itoa(tools.Conf.Month))
 			if err != nil {
 				panic(err)
 			}
@@ -39,9 +43,9 @@ func main() {
 	}
 
 	// check the number of stock is enough
-	if len(stockInfoList[0].ClosingPrices) < tools.EnsureFetchDays {
+	if len(stockInfoList[0].ClosingPrices) < ensureFetchDays {
 		// fetch one more month
-		stockInfoListNew, err := tools.GetAllStockInfoMonth(strconv.Itoa(month - 1))
+		stockInfoListNew, err := tools.GetAllStockInfoMonth(strconv.Itoa(tools.Conf.Month - 1))
 		if err != nil {
 			panic(err)
 		}
@@ -60,7 +64,7 @@ func main() {
 	// fmt.Println(rsv)
 
 	kInit, dInit := 50, 50
-	k, d := tools.CalKDOneStock(float32(kInit), float32(dInit), stockInfoList[0], rsvDuration)
+	k, d := tools.CalKDOneStock(float32(kInit), float32(dInit), stockInfoList[0], tools.Conf.RsvDuration)
 
 	fmt.Println(k, d)
 }

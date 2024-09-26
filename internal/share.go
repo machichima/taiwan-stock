@@ -23,3 +23,12 @@ type ClosingPriceDate struct {
 	Date         string
 	ClosingPrice float32
 }
+
+type Config struct {
+	Month           int
+	RsvDuration     int
+	KdDays          int
+	RetryTimes      int
+	AllStockUrl     string
+	OneStockDateUrl string
+}

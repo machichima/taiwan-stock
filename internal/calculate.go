@@ -49,7 +49,7 @@ func CalKDOneStock(kPrev float32, dPrev float32, stockInfo StockInfo, rsvDuratio
 
 	k, d := kPrev, dPrev
 	fmt.Println("init k, d: ", k, d)
-	for i := KdDays - 1; i >= 0; i-- {
+	for i := Conf.KdDays - 1; i >= 0; i-- {
 		fmt.Println(i, " days before")
 		rsv := CalRSVOneStock(stockInfo, rsvDuration, i)
 		fmt.Println("rsv: ", rsv)

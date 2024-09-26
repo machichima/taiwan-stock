@@ -1,0 +1,9 @@
+{
+    "Month": 9,
+    "RsvDuration": 9,
+    "KdDays": 8,
+    "RetryTimes": 5,
+
+    "AllStockUrl": "https://www.twse.com.tw/exchangeReport/STOCK_DAY_ALL",
+    "OneStockDateUrl": "https://www.twse.com.tw/exchangeReport/STOCK_DAY?date=%s&stockNo=%s"
+}
