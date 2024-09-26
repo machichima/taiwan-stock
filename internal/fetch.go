@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"os"
 	"strconv"
 	"time"
 )
 
+// TODO: Move to independent config file
 const allStockUrl string = "https://www.twse.com.tw/exchangeReport/STOCK_DAY_ALL"
 const oneStockDateUrl string = "https://www.twse.com.tw/exchangeReport/STOCK_DAY?date=%s&stockNo=%s"
 
@@ -28,7 +28,6 @@ func GetAllStockInfoMonth(month string) ([]StockInfo, error) {
 
 	startTime := time.Now()
 	for _, idTitle := range stockIdTitles {
-		// TODO: add oneStockInfo to the list of StockInfo
 		oneStockInfo, err := FetchOneStockMonth(idTitle.ID, month)
 		if err != nil {
 			return []StockInfo{}, nil
@@ -55,7 +54,7 @@ func GetAllStockInfoMonth(month string) ([]StockInfo, error) {
 				})
 		}
 
-		// TODO: Check the closingPrices contain the correct info
+		// TODO: Notify if the closing price is "--" (missing)
 
 		allStockInfo = append(
 			allStockInfo,
