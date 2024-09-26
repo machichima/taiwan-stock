@@ -15,6 +15,9 @@ const oneStockDateUrl string = "https://www.twse.com.tw/exchangeReport/STOCK_DAY
 
 const retryTimes int = 5 // maximum retry time
 
+const EnsureFetchDays int = 15  // least amount of data required
+const KdDays int = 8
+
 func GetAllStockInfoMonth(month string) ([]StockInfo, error) {
 	stockIdTitles, err := GetAllStockIDTitle()
 	if err != nil {
@@ -67,12 +70,6 @@ func GetAllStockInfoMonth(month string) ([]StockInfo, error) {
 	}
 
 	fmt.Println(time.Since(startTime))
-
-	// Save result to json
-	file, err := json.MarshalIndent(allStockInfo, "", "  ")
-	if err := os.WriteFile("stockInfo.json", file, os.ModePerm); err != nil {
-		return []StockInfo{}, err
-	}
 
 	return allStockInfo, nil
 
